@@ -1,5 +1,6 @@
 package com.epam.sample.jax_ws_auth;
 
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 /**
@@ -9,7 +10,7 @@ import javax.jws.WebService;
 public class GreetingService {
 
     @WebMethod // marks method as web service operation
-    String greet(String name) {
+    public String greet(String name) {
         return "Hello, " + name;
     }
 }
