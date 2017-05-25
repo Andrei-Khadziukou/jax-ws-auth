@@ -1,1 +1,5 @@
 rootProject.name = 'jax-ws-auth'
+
+include 'jax-ws-auth-server'
+include 'jax-ws-auth-client'
+
