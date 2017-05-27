@@ -9,11 +9,30 @@
        http://cxf.apache.org/bindings/soap http://cxf.apache.org/schemas/configuration/soap.xsd
        http://cxf.apache.org/jaxws
        http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <bean id="com.epam.sample.usernameTokenCallbackHandler"
+          class="com.epam.sample.jax_ws_auth.UsernameTokenCallbackHandler"/>
     <!-- Configures Service provide which will react on the URLs with /greet -->
     <jaxws:server id="com.epam.sample.greetingService" address="/greet">
         <!-- Adds class wich implement web service -->
         <jaxws:serviceBean>
             <bean class="com.epam.sample.jax_ws_auth.GreetingService"/>
         </jaxws:serviceBean>
+        <!-- Allows to add 'in' (incoming) interceptors for CXF -->
+        <jaxws:inInterceptors>
+            <!-- Configure security interceptor -->
+            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+                <constructor-arg>
+                    <map>
+                        <!-- Authentication type. One of “UsernameToken, “Signature”, “Encrypt”, “Timestamp, “SAMLTokenSigned” -->
+                        <entry key="action" value="UsernameToken"/>
+                        <!-- Type of the password (for the UsernameToken authentication type): PasswordText or PasswordDigest -->
+                        <entry key="passwordType" value="PasswordText"/>
+                        <!-- Bean to provide password from storage -->
+                        <entry key="passwordCallbackRef" value-ref="com.epam.sample.usernameTokenCallbackHandler"/>
+                    </map>
+                </constructor-arg>
+            </bean>
+        </jaxws:inInterceptors>
     </jaxws:server>
 </beans>
